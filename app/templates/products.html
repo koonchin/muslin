@@ -1,0 +1,376 @@
+{% extends "base.html" %} {% block content %}
+
+<head>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        img {
+            vertical-align: middle;
+        }
+        /* Position the image container (needed to position the left and right arrows) */
+        
+        .container {
+            position: relative;
+        }
+        /* Hide the images by default */
+        
+        .mySlides {
+            display: none;
+        }
+        /* Add a pointer when hovering over the thumbnail images */
+        
+        .cursor {
+            cursor: pointer;
+        }
+        /* Next & previous buttons */
+        
+        .prev,
+        .next {
+            cursor: pointer;
+            position: absolute;
+            top: 40%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        /* Position the "next button" to the right */
+        
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        /* On hover, add a black background color with a little bit see-through */
+        
+        .prev:hover,
+        .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        /* Number text (1/3 etc) */
+        
+        .numbertext {
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+        }
+        /* Container for image text */
+        
+        .caption-container {
+            text-align: center;
+            background-color: #222;
+            padding: 2px 16px;
+            color: white;
+        }
+        
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        /* Six columns side by side */
+        
+        .column {
+            float: left;
+            width: 16.66%;
+        }
+        /* Add a transparency effect for thumnbail images */
+        
+        .demo {
+            opacity: 0.6;
+        }
+        
+        .active,
+        .demo:hover {
+            opacity: 1;
+        }
+        
+        .according {
+            border-top: 1px solid #ddd;
+            color: #1b80d9;
+            font-weight: 600;
+            padding-top: 20px;
+            width: 100%;
+            text-align: left;
+        }
+    </style>
+</head>
+<main class="mt-5 pt-4">
+    <div class="container dark-grey-text mt-5">
+
+        <!--Grid row-->
+        <div class="row wow fadeIn">
+
+            <!--Grid column-->
+            <div class="col-md-6 mb-4">
+
+                {% comment %}
+                <img src="/media/{{object.image}}" class="img-fluid" alt="" style="object-fit:contain;width:25vmax;height:30vmax;"> {% endcomment %}
+
+                <div class="container">
+                    {% for image in object.image %}
+                    <div class="mySlides">
+                        <div class="numbertext">{{forloop.counter}} / {{ object.image|length }}</div>
+                        <img src="{{image}}" style="width:100%">
+                    </div>
+                    {% endfor %}
+
+                    <a class="prev" onclick="plusSlides(-1)">❮</a>
+                    <a class="next" onclick="plusSlides(1)">❯</a>
+
+                    <br>
+
+                    <div class="row">
+                        {% for image in object.image %}
+                        <div class="column">
+                            <img class="demo cursor" src="{{image}}" style="width:100%" onclick="currentSlide({{forloop.counter}})" alt="">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+
+            <!--Grid column-->
+            <!--Grid column-->
+            <div class="col-md-6 mb-4">
+
+                <!--Content-->
+                <div class="p-4">
+
+                    <div class="mb-3">
+                        <a href="">
+                            <span class="badge purple mr-1">{{ object.category }}</span>
+                        </a>
+                    </div>
+
+                    <p class="lead">
+                        <h1 style="text-align:left">
+                            {{item.title}}
+                        </h1>
+                        <h2 style="text-align:left">
+                            {% if object.discount_price %}
+                            <span class="mr-1">
+                <del>฿{{ object.price }}</del>
+              </span>
+                            <span>฿{{ object.discount_price }}</span> {% else %}
+                            <span>฿{{ object.price }}</span> {% endif %}
+                        </h2>
+                    </p>
+
+                    <p class="lead font-weight-bold">Description</p>
+                    <p>
+                        <pre style="width:100%;font-size:0.9rem;">{{ object.data_size }}</pre>
+                    </p>
+                </div>
+                <!--Content-->
+                <form action="/add-to-cart/{{object.slug}}/" method="post">
+                    {% csrf_token %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <select id="size" name="size" class="form-control">
+                    
+                  <option value="">SIZE ▼</option>
+                    {% for size in object.size %}
+                        <option value="{{size}}">{{size}}</option>
+                        {% endfor %}
+                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <div id="size_guide" class="according" type="text" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                        <span>
+                                            <svg class="svg" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#000000">
+                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                <g> 
+                                                <path class="st0" d="M373.324,0.003L0,373.321l138.676,138.676L512,138.68L373.324,0.003z M42.668,373.321l43.942-43.95 l49.436,49.437l18.671-18.664l-49.437-49.437l37.38-37.379l28.482,28.475l18.664-18.664l-28.475-28.482l37.328-37.328 l49.437,49.437l18.664-18.664l-49.437-49.437l37.394-37.394l28.475,28.482l18.664-18.664l-28.475-28.482l37.328-37.336 l49.437,49.436l18.672-18.664l-49.437-49.437l43.942-43.942l96.008,96.015L138.676,469.337L42.668,373.321z"></path>
+                                             </g> </g>
+                                            </svg>
+                                            Size guide
+                                        </span>
+                                        <span style="text-align:right;float:right;">
+                                            <svg id="size_arrow"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+                                                <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+                                              </svg>
+                                              <svg style="display:none" id="size_arrow_fill" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                                              </svg>
+                                        </span>
+                                    </div>
+                                </p>
+                                <div class="collapse" id="collapseExample" style="margin-bottom:2vmax;">
+                                    <div class="card card-body">
+                                        <img src="https://139-162-28-194.ip.linodeusercontent.com/media/size.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <div id="fabric" class="according" type="text" data-toggle="collapse" data-target="#Fabric" aria-expanded="false" aria-controls="collapseExample">
+                                        <span> 
+                                            <svg class="svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path clip-rule="evenodd" d="M17 11C17 9.89543 17.8954 9 19 9H21V4H16.8569C16.4834 5.6291 15.4009 7.03561 13.8672 7.80248L12.8944 8.28885C12.3314 8.57038 11.6686 8.57038 11.1056 8.28885L10.1328 7.80248C8.59908 7.03561 7.51661 5.6291 7.14314 4H3V9H5C6.10457 9 7 9.89543 7 11V20H17V11ZM12 6.5L11.0272 6.01362C9.78482 5.39241 9 4.12255 9 2.73347C9 2.32838 8.67162 2 8.26653 2H3C1.89543 2 1 2.89543 1 4V10C1 10.5523 1.44772 11 2 11H5V20C5 21.1046 5.89543 22 7 22H17C18.1046 22 19 21.1046 19 20V11H22C22.5523 11 23 10.5523 23 10V4C23 2.89543 22.1046 2 21 2H15.7335C15.3284 2 15 2.32838 15 2.73347C15 4.12255 14.2152 5.39241 12.9728 6.01362L12 6.5Z" fill-rule="evenodd"></path></g></svg>
+                                        Fabric care
+                                    </span>
+                                        <span style="text-align:right;float:right;">
+                                        <svg id="fabric_arrow"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+                                            <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+                                          </svg>
+                                          <svg style="display:none" id="fabric_arrow_fill" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                                          </svg>
+                                    </span>
+                                    </div>
+                                </p>
+                                <div class="collapse" id="Fabric" style="color:#1b80d9">
+                                    <div>
+                                        <p>- Wash with room temperature<br>- Do not bleach<br>- Best with mesh laundry bag<br>- Best with colored laundry detergent</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% comment %} <div class="row">
+                            <div class="col">
+                                <p>
+                                    <div style="margin-bottom:2vmax;" class="according" type="text" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                        Size guide
+                                    </div>
+                                </p>
+                                <div class="collapse" id="collapseExample" style="margin-bottom:2vmax;">
+                                    <div class="card card-body">
+                                        <img src="https://139-162-28-194.ip.linodeusercontent.com/media/size.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div> {% endcomment %}
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary btn-md my-0 p" style="width:100%">
+                {% comment %} <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p"> {% endcomment %}
+                  Add to cart
+                  <i class="fas fa-shopping-cart ml-1"></i>
+                  </a>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-danger btn-md my-0 p" style="width:100%">
+                        {% comment %} <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p"> {% endcomment %}
+                            Remove from cart
+                        </a>
+                    </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        </div>
+        <!--Grid column-->
+
+
+      </div>
+      <!--Grid row-->
+
+      <hr>
+
+      <!--Grid row-->
+      <div class="row d-flex justify-content-center wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-md-6 text-center">
+
+          <h3 class="my-4 h3"><u>วิธีการดูแลรักษา และ การประกันสินค้า</u></h3>
+{% comment %} 
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit
+            voluptates,
+            quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p> {% endcomment %}
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+
+      <!--Grid row-->
+      <div class="row wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-12 mb-4">
+
+          <img src="/media/S__16433208.jpg" class="img-fluid" alt="">
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-6 mb-4">
+
+          <img src="/media/S__16433210.jpg" class="img-fluid" alt="">
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-6 mb-4">
+
+          <img src="/media/S__16433211.jpg" class="img-fluid" alt="">
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+
+    </div>
+
+    
+    <script>
+      let slideIndex = 1;
+      showSlides(slideIndex);
+      
+      function plusSlides(n) {
+        showSlides(slideIndex += n);
+      }
+      
+      function currentSlide(n) {
+        showSlides(slideIndex = n);
+      }
+      
+      function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("demo");
+        let captionText = document.getElementById("caption");
+        if (n > slides.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = slides.length}
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+          dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex-1].style.display = "block";
+        dots[slideIndex-1].className += " active";
+        {% comment %} captionText.innerHTML = dots[slideIndex-1].alt; {% endcomment %}
+      }
+      
+      </script>
+      
+  </main>
+
+{% endblock content %}

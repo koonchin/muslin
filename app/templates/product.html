@@ -1,0 +1,348 @@
+{% extends "base.html" %} {% block content %}
+
+<head>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        img {
+            vertical-align: middle;
+        }
+        /* Position the image container (needed to position the left and right arrows) */
+        
+        .container {
+            position: relative;
+        }
+        /* Hide the images by default */
+        
+        .mySlides {
+            display: none;
+        }
+        /* Add a pointer when hovering over the thumbnail images */
+        
+        .cursor {
+            cursor: pointer;
+        }
+        /* Next & previous buttons */
+        
+        .prev,
+        .next {
+            cursor: pointer;
+            position: absolute;
+            top: 40%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        /* Position the "next button" to the right */
+        
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        /* On hover, add a black background color with a little bit see-through */
+        
+        .prev:hover,
+        .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        /* Number text (1/3 etc) */
+        
+        .numbertext {
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+        }
+        /* Container for image text */
+        
+        .caption-container {
+            text-align: center;
+            background-color: #222;
+            padding: 2px 16px;
+            color: white;
+        }
+        
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        /* Six columns side by side */
+        
+        .column {
+            float: left;
+            width: 16.66%;
+        }
+        /* Add a transparency effect for thumnbail images */
+        
+        .demo {
+            opacity: 0.6;
+        }
+        
+        .active,
+        .demo:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<main class="mt-5 pt-4">
+    <div class="container dark-grey-text mt-5">
+
+        <!--Grid row-->
+        <div class="row wow fadeIn">
+
+            <!--Grid column-->
+            <div class="col-md-6 mb-4">
+
+                {% comment %}
+                <img src="/media/{{object.image}}" class="img-fluid" alt="" style="object-fit:contain;width:25vmax;height:30vmax;"> {% endcomment %}
+
+                <div class="container">
+                    <div class="mySlides">
+                        <div class="numbertext">1 / 6</div>
+                        <img src="/media/{{object.image}}" style="width:100%">
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext">2 / 6</div>
+                        <img src="/media/{{object.image}}" style="width:100%">
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext">3 / 6</div>
+                        <img src="/media/{{object.image}}" style="width:100%">
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext">4 / 6</div>
+                        <img src="/media/DisplayProductImage_1.png" style="width:100%">
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext">5 / 6</div>
+                        <img src="/media/DisplayProductImage_2.png" style="width:100%">
+                    </div>
+
+                    <div class="mySlides">
+                        <div class="numbertext">6 / 6</div>
+                        <img src="/media/{{object.image}}" style="width:100%">
+                    </div>
+
+                    <a class="prev" onclick="plusSlides(-1)">❮</a>
+                    <a class="next" onclick="plusSlides(1)">❯</a>
+
+                    <br>
+
+                    <div class="row">
+                        <div class="column">
+                            <img class="demo cursor" src="/media/{{object.image}}" style="width:100%" onclick="currentSlide(1)" alt="">
+                        </div>
+                        <div class="column">
+                            <img class="demo cursor" src="/media/{{object.image}}" style="width:100%" onclick="currentSlide(2)" alt="">
+                        </div>
+                        <div class="column">
+                            <img class="demo cursor" src="/media/{{object.image}}" style="width:100%" onclick="currentSlide(3)" alt="">
+                        </div>
+                        <div class="column">
+                            <img class="demo cursor" src="/media/DisplayProductImage_1.png" style="width:100%" onclick="currentSlide(4)" alt="">
+                        </div>
+                        <div class="column">
+                            <img class="demo cursor" src="/media/DisplayProductImage_2.png" style="width:100%" onclick="currentSlide(5)" alt="">
+                        </div>
+                        <div class="column">
+                            <img class="demo cursor" src="/media/{{object.image}}" style="width:100%" onclick="currentSlide(6)" alt="">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--Grid column-->
+            <!--Grid column-->
+            <div class="col-md-6 mb-4">
+
+                <!--Content-->
+                <div class="p-4">
+
+                    <div class="mb-3">
+                        <a href="">
+                            <span class="badge purple mr-1">{{ object.get_category_display }}</span>
+                        </a>
+                    </div>
+
+                    <p class="lead">
+                        <h2>
+                            {% if object.discount_price %}
+                            <span class="mr-1">
+                <del>฿{{ object.price }}</del>
+              </span>
+                            <span>฿{{ object.discount_price }}</span> {% else %}
+                            <span>฿{{ object.price }}</span> {% endif %}
+                        </h2>
+                    </p>
+
+                    <p class="lead font-weight-bold">Description</p>
+
+                    <p>
+                        <h2><pre style="width:40vmax;">{{ object.description }}</pre></h2>
+                    </p>
+                </div>
+                <!--Content-->
+                <form action="/add-to-cart/{{object.slug}}/" method="post">
+                    {% csrf_token %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <select id="size" name="size" class="form-control" style="height: 7vh;font-size: 2vmax;width: 8vw;text-align: center;margin:0.6vmax;">
+                    
+                  <option value="">SIZE ▼</option>
+                  
+                      <option value="LX">LX</option>
+                  
+                      <option value="XL1">XL1</option>
+                  
+                      <option value="S">S</option>
+                  
+                      <option value="M">M</option>
+                  
+                      <option value="L">L</option>
+                  
+                      <option value="F">F</option>
+                  
+                      <option value="XL">XL</option>
+                  
+                      <option value="2XL">2XL</option>
+                  
+                      <option value="3XL">3XL</option>
+                  
+                      <option value="4XL">4XL</option>
+                  
+                      <option value="5XL">5XL</option>
+                  
+                      <option value="6XL">6XL</option>
+                  
+                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary btn-md my-0 p">
+                {% comment %} <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p"> {% endcomment %}
+                  Add to cart
+                  <i class="fas fa-shopping-cart ml-1"></i>
+                  </a>
+                  <button type="submit" class="btn btn-danger btn-md my-0 p">
+                  {% comment %} <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p"> {% endcomment %}
+                    Remove from cart
+                  </a>
+              </div>
+            </div>
+          </form>
+        </div>
+        </div>
+        <!--Grid column-->
+
+
+      </div>
+      <!--Grid row-->
+
+      <hr>
+
+      <!--Grid row-->
+      <div class="row d-flex justify-content-center wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-md-6 text-center">
+
+          <h3 class="my-4 h3"><u>วิธีการดูแลรักษา และ การประกันสินค้า</u></h3>
+{% comment %} 
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit
+            voluptates,
+            quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p> {% endcomment %}
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+
+      <!--Grid row-->
+      <div class="row wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-12 mb-4">
+
+          <img src="/media/S__16433208.jpg" class="img-fluid" alt="">
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-6 mb-4">
+
+          <img src="/media/S__16433210.jpg" class="img-fluid" alt="">
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-6 mb-4">
+
+          <img src="/media/S__16433211.jpg" class="img-fluid" alt="">
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+
+    </div>
+
+    
+    <script>
+      let slideIndex = 1;
+      showSlides(slideIndex);
+      
+      function plusSlides(n) {
+        showSlides(slideIndex += n);
+      }
+      
+      function currentSlide(n) {
+        showSlides(slideIndex = n);
+      }
+      
+      function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("demo");
+        let captionText = document.getElementById("caption");
+        if (n > slides.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = slides.length}
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+          dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex-1].style.display = "block";
+        dots[slideIndex-1].className += " active";
+        {% comment %} captionText.innerHTML = dots[slideIndex-1].alt; {% endcomment %}
+      }
+      </script>
+  </main>
+
+{% endblock content %}
